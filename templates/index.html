@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0">
+
+<title>
+AI CCTV Analyzer
+</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    background:
+        #070b14;
+
+    color:
+        #f8fafc;
+}
+
+
+header {
+
+    padding:
+        20px 35px;
+
+    background:
+        #111827;
+
+    border-bottom:
+        1px solid #263244;
+}
+
+
+header h1 {
+
+    margin: 0;
+
+    color:
+        #60a5fa;
+}
+
+
+.container {
+
+    max-width:
+        1400px;
+
+    margin:
+        auto;
+
+    padding:
+        30px;
+}
+
+
+/* =========================================
+   UPLOAD
+========================================= */
+
+.upload-box {
+
+    background:
+        #111827;
+
+    border:
+        1px solid #263244;
+
+    border-radius:
+        15px;
+
+    padding:
+        40px;
+
+    text-align:
+        center;
+
+    margin-bottom:
+        30px;
+}
+
+
+.upload-box h2 {
+
+    margin-top: 0;
+}
+
+
+.file-input {
+
+    display:
+        block;
+
+    margin:
+        25px auto;
+
+    padding:
+        15px;
+
+    background:
+        #1e293b;
+
+    border-radius:
+        8px;
+
+    color:
+        white;
+
+    max-width:
+        500px;
+
+    width:
+        100%;
+}
+
+
+.upload-button {
+
+    background:
+        #2563eb;
+
+    color:
+        white;
+
+    border:
+        none;
+
+    border-radius:
+        8px;
+
+    padding:
+        14px 25px;
+
+    font-size:
+        16px;
+
+    cursor:
+        pointer;
+}
+
+
+.upload-button:hover {
+
+    background:
+        #1d4ed8;
+}
+
+
+/* =========================================
+   VIDEOS
+========================================= */
+
+.video-list {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                250px,
+                1fr
+            )
+        );
+
+    gap:
+        15px;
+}
+
+
+.video-card {
+
+    background:
+        #111827;
+
+    padding:
+        20px;
+
+    border-radius:
+        10px;
+
+    border:
+        1px solid #263244;
+}
+
+
+.video-card a {
+
+    color:
+        #60a5fa;
+
+    text-decoration:
+        none;
+}
+
+
+/* =========================================
+   STATS
+========================================= */
+
+.stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap:
+        15px;
+
+    margin-bottom:
+        25px;
+}
+
+
+.stat {
+
+    background:
+        #111827;
+
+    border:
+        1px solid #263244;
+
+    border-radius:
+        12px;
+
+    padding:
+        20px;
+}
+
+
+.stat-name {
+
+    color:
+        #94a3b8;
+
+    font-size:
+        14px;
+}
+
+
+.stat-value {
+
+    color:
+        #60a5fa;
+
+    font-size:
+        30px;
+
+    font-weight:
+        bold;
+
+    margin-top:
+        8px;
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.search-box {
+
+    background:
+        #111827;
+
+    padding:
+        20px;
+
+    border-radius:
+        12px;
+
+    margin-bottom:
+        25px;
+}
+
+
+.search-box input,
+.search-box select {
+
+    background:
+        #1e293b;
+
+    color:
+        white;
+
+    border:
+        none;
+
+    padding:
+        12px;
+
+    border-radius:
+        7px;
+
+    margin-right:
+        8px;
+}
+
+
+.search-box input {
+
+    width:
+        350px;
+}
+
+
+.search-box button {
+
+    background:
+        #2563eb;
+
+    color:
+        white;
+
+    border:
+        none;
+
+    padding:
+        12px 20px;
+
+    border-radius:
+        7px;
+
+    cursor:
+        pointer;
+}
+
+
+/* =========================================
+   VIDEO
+========================================= */
+
+video {
+
+    width:
+        100%;
+
+    max-height:
+        650px;
+
+    background:
+        black;
+
+    border-radius:
+        10px;
+
+    margin-bottom:
+        25px;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+table {
+
+    width:
+        100%;
+
+    border-collapse:
+        collapse;
+
+    background:
+        #111827;
+
+    border-radius:
+        10px;
+
+    overflow:
+        hidden;
+}
+
+
+th {
+
+    background:
+        #1e293b;
+
+    color:
+        #93c5fd;
+}
+
+
+th,
+td {
+
+    padding:
+        12px;
+
+    border-bottom:
+        1px solid #263244;
+
+    text-align:
+        left;
+}
+
+
+.plate {
+
+    color:
+        #facc15;
+
+    font-weight:
+        bold;
+}
+
+
+.snapshot {
+
+    width:
+        120px;
+
+    max-height:
+        80px;
+
+    object-fit:
+        cover;
+
+    border-radius:
+        5px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width: 800px) {
+
+    .stats {
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
+    .search-box input {
+
+        width:
+            100%;
+
+        margin-bottom:
+            10px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>
+🎥 AI CCTV Analyzer
+</h1>
+
+</header>
+
+
+<div class="container">
+
+
+{% if page == "home" %}
+
+
+<!-- ======================================
+     UPLOAD
+======================================= -->
+
+<div class="upload-box">
+
+<h2>
+Upload CCTV Video
+</h2>
+
+<p>
+Upload a CCTV recording and let the AI
+analyze people, vehicles and readable
+license plates.
+</p>
+
+
+<form
+    action="/upload"
+    method="POST"
+    enctype="multipart/form-data"
+>
+
+<input
+    class="file-input"
+    type="file"
+    name="video"
+    accept=".mp4,.avi,.mov,.mkv,.webm"
+    required
+>
+
+
+<button
+    class="upload-button"
+    type="submit"
+>
+
+🚀 Upload & Analyze
+
+</button>
+
+</form>
+
+
+<p>
+Supported:
+MP4, AVI, MOV, MKV, WEBM
+</p>
+
+</div>
+
+
+<!-- ======================================
+     PREVIOUS VIDEOS
+======================================= -->
+
+{% if videos %}
+
+<h2>
+Previous Videos
+</h2>
+
+
+<div class="video-list">
+
+{% for video in videos %}
+
+<div class="video-card">
+
+<strong>
+{{ video["filename"] }}
+</strong>
+
+<p>
+Uploaded:
+{{ video["uploaded_at"] }}
+</p>
+
+<p>
+Status:
+{{ video["status"] }}
+</p>
+
+<a
+href="/results/{{ video['id'] }}"
+>
+Open results →
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+
+{% else %}
+
+
+<!-- ======================================
+     RESULTS
+======================================= -->
+
+<h2>
+
+Results:
+{{ video["filename"] }}
+
+</h2>
+
+
+<!-- ======================================
+     STATS
+======================================= -->
+
+<div class="stats">
+
+
+<div class="stat">
+
+<div class="stat-name">
+Total detections
+</div>
+
+<div class="stat-value">
+{{ statistics.total }}
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-name">
+People tracked
+</div>
+
+<div class="stat-value">
+{{ statistics.people }}
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-name">
+Vehicles tracked
+</div>
+
+<div class="stat-value">
+{{ statistics.vehicles }}
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-name">
+Unique plates
+</div>
+
+<div class="stat-value">
+{{ statistics.plates }}
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- ======================================
+     PROCESSED VIDEO
+======================================= -->
+
+{% if video["status"] == "completed" %}
+
+<video controls>
+
+<source
+    src="/processed/video_{{ video['id'] }}_processed.mp4"
+    type="video/mp4"
+>
+
+Your browser does not support video.
+
+</video>
+
+{% endif %}
+
+
+<!-- ======================================
+     SEARCH
+======================================= -->
+
+<div class="search-box">
+
+<form
+    method="GET"
+    action="/results/{{ video['id'] }}"
+>
+
+
+<input
+    type="text"
+    name="q"
+    value="{{ query }}"
+    placeholder="Search plate or track ID..."
+>
+
+
+<select name="type">
+
+<option value="">
+All objects
+</option>
+
+
+<option
+value="person"
+
+{% if object_type == "person" %}
+selected
+{% endif %}
+
+>
+People
+</option>
+
+
+<option
+value="car"
+
+{% if object_type == "car" %}
+selected
+{% endif %}
+
+>
+Cars
+</option>
+
+
+<option
+value="motorcycle"
+
+{% if object_type == "motorcycle" %}
+selected
+{% endif %}
+
+>
+Motorcycles
+</option>
+
+
+<option
+value="bus"
+
+{% if object_type == "bus" %}
+selected
+{% endif %}
+
+>
+Buses
+</option>
+
+
+<option
+value="truck"
+
+{% if object_type == "truck" %}
+selected
+{% endif %}
+
+>
+Trucks
+</option>
+
+</select>
+
+
+<button type="submit">
+🔍 Search
+</button>
+
+
+</form>
+
+</div>
+
+
+<!-- ======================================
+     RESULTS TABLE
+======================================= -->
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Video time
+</th>
+
+<th>
+Track ID
+</th>
+
+<th>
+Object
+</th>
+
+<th>
+Confidence
+</th>
+
+<th>
+License plate
+</th>
+
+<th>
+Snapshot
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{% for detection in detections %}
+
+<tr>
+
+<td>
+{{ detection["timestamp"] }}
+</td>
+
+
+<td>
+#{{ detection["track_id"] }}
+</td>
+
+
+<td>
+{{ detection["object_type"] }}
+</td>
+
+
+<td>
+
+{{ "%.1f"|format(
+    detection["confidence"] * 100
+) }}%
+
+</td>
+
+
+<td class="plate">
+
+{{ detection["plate"] }}
+
+</td>
+
+
+<td>
+
+{% if detection["snapshot"] %}
+
+<img
+class="snapshot"
+src="/snapshots/{{ detection['snapshot'] }}"
+>
+
+{% else %}
+
+-
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+
+{% endif %}
+
+
+</div>
+
+</body>
+
+</html>
